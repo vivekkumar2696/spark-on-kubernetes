@@ -16,7 +16,8 @@ Involves two docker images:-
 Deploying Spark master and worker nodes followed by Zeppelin 
 
 
-```$ kubectl create -f kubernetes/spark/namespace-spark-cluster.yaml
+```
+$ kubectl create -f kubernetes/spark/namespace-spark-cluster.yaml
 $ kubectl create -f kubernetes/spark/spark-master-controller.yaml
 $ kubectl create -f kubernetes/spark/spark-master-service.yaml
 $ kubectl create -f kubernetes/spark/spark-ui-proxy-controller.yaml
@@ -25,3 +26,41 @@ $ kubectl create -f kubernetes/spark/spark-worker-controller.yaml
 $ kubectl create -f kubernetes/spark/zeppelin-controller.yaml
 $ kubectl create -f kubernetes/spark/zeppelin-service.yaml
 ```
+```
+$ kubectl exec zeppelin-controller-abc123 -it pyspark
+Python 2.7.9 (default, Mar  1 2015, 12:57:24)
+[GCC 4.9.2] on linux2
+Type "help", "copyright", "credits" or "license" for more information.
+Welcome to
+      ____              __
+     / __/__  ___ _____/ /__
+    _\ \/ _ \/ _ `/ __/  '_/
+   /__ / .__/\_,_/_/ /_/\_\   version 1.5.1
+      /_/
+
+Using Python version 2.7.9 (default, Mar  1 2015 12:57:24)
+SparkContext available as sc, HiveContext available as sqlContext.
+>>> from math import sqrt; from itertools import count, islice
+>>>
+>>> def isprime(n):
+...     return n > 1 and all(n%i for i in islice(count(2), int(sqrt(n)-1)))
+...
+>>> nums = sc.parallelize(xrange(10000000))
+
+>>> print nums.filter(isprime).count()
+664579
+```
+
+
+
+For Spark UI:
+
+`kubectl proxy --port=8001`
+
+Then visit http://localhost:8001/api/v1/proxy/namespaces/spark-cluster/services/spark-ui-proxy/.
+
+For Zeppelin:
+
+`kubectl port-forward zeppelin-controller-abc123 8080:8080 &`
+
+Then visit http://localhost:8080/.
