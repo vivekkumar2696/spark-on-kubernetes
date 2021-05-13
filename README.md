@@ -14,3 +14,14 @@ Involves two docker images:-
 
 ## Kubernetes
 Deploying Spark master and worker nodes followed by Zeppelin 
+
+
+```$ kubectl create -f kubernetes/spark/namespace-spark-cluster.yaml
+$ kubectl create -f kubernetes/spark/spark-master-controller.yaml
+$ kubectl create -f kubernetes/spark/spark-master-service.yaml
+$ kubectl create -f kubernetes/spark/spark-ui-proxy-controller.yaml
+$ kubectl create -f kubernetes/spark/spark-ui-proxy-service.yaml
+$ kubectl create -f kubernetes/spark/spark-worker-controller.yaml
+$ kubectl create -f kubernetes/spark/zeppelin-controller.yaml
+$ kubectl create -f kubernetes/spark/zeppelin-service.yaml
+```
